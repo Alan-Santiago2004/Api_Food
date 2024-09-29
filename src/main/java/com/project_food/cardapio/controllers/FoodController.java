@@ -22,6 +22,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
+@RequestMapping("/food")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FoodController {
     @Autowired
     private FoodRepository foodRepository;
@@ -33,8 +35,7 @@ public class FoodController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
         }
     )
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @PostMapping("/food")
+    @PostMapping
     public ResponseEntity<FoodModel> saveFood(@RequestBody @Valid FoodRequestDto foodRequestDto){
         FoodModel food = new FoodModel();
         BeanUtils.copyProperties(foodRequestDto,food);
@@ -48,8 +49,7 @@ public class FoodController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
         }
     )
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @GetMapping("/food")
+    @GetMapping
     public ResponseEntity<List<FoodModel>> getAllFoods(){
         List<FoodModel> foodList = foodRepository.findAll();
         if(!foodList.isEmpty()){
@@ -68,8 +68,7 @@ public class FoodController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
         }
     )
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @GetMapping("/food/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> getOneFood(@PathVariable(value = "id") UUID id){
         Optional<FoodModel> food = foodRepository.findById(id);
         if(food.isEmpty()){
@@ -86,7 +85,7 @@ public class FoodController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
         }
     )
-    @PutMapping("/food/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> updateFood(@PathVariable(value = "id")UUID id,
                                                 @RequestBody @Valid FoodRequestDto foodRequestDto){
         Optional<FoodModel> food = foodRepository.findById(id);
@@ -105,7 +104,7 @@ public class FoodController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
         }
     )
-    @DeleteMapping("/food/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id")UUID id){
         Optional<FoodModel> food = foodRepository.findById(id);
         if(food.isEmpty()){
